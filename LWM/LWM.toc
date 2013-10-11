@@ -1,0 +1,20 @@
+## Interface: 20400
+
+## Title: Loot Wishlist Manager
+## Notes: Allows easy management of loot wishlists. Usage: /lwm
+## Author: Siarkowy <siarkowy@siarkowy.net>
+## X-Website: https://github.com/Siarkowy/LootWishlistManager
+## X-License: BSD-2.0
+## OptionalDeps: Ace3
+## SavedVariables: LwmDB
+## Version: 1.0a
+
+# Libs
+
+#
+# Ace3 goes here
+#
+
+# Core
+core.lua
+slash.lua
