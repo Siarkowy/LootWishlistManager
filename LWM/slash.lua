@@ -35,6 +35,8 @@ LWM.slash = {
                     LWM:Printf("%2$s / %1$s added to wishlist.", item, cat:gsub("/", " / "))
                 else
                     LWM:Print("Usage: /lwm add <category> <item link>")
+                    LWM:Echo("   <category> - String in form of slash separated tags like: Instance/Boss.")
+                    LWM:Echo("   <item link> - Item link to save under given category to wishlist.")
                 end
             end,
             order = 10
