@@ -15,6 +15,8 @@
 # Ace3 goes here
 #
 
+Libs\LibFuBarPlugin-3.0\lib.xml
+
 # Core
 core.lua
 slash.lua
