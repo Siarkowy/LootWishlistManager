@@ -57,10 +57,52 @@ function LWM:OnSlashCmd(input)
     -- end
 end
 
--- Core ------------------------------------------------------------------------
+-- Utils -----------------------------------------------------------------------
 
 function LWM:Printf(...) self:Print(format(...)) end
 function LWM:Echo(...) DEFAULT_CHAT_FRAME:AddMessage(format(...)) end
+
+function LWM.ExtractCharacter(input, default)
+    local char
+
+    input = input:gsub("@(%w+)", function(m) char = m return "" end):trim()
+
+    return input, char or default
+end
+
+--- Performs multiple pattern matches on supplied value.
+-- @param v (mixed) Test value.
+-- @param patterns (string) Pattern string in form of "pat1|pat2|...|patN".
+-- @return bool Whether anything matched.
+function LWM.anymatch(v, patterns)
+    for pat in patterns:gmatch("[^|]+") do
+        if tostring(v):match(pat) then
+            return true
+        end
+    end
+
+    return false
+end
+
+do
+    local data = {}
+
+    --- Replaces %vars with their current values.
+    -- @param str (string) Input string.
+    -- @return string
+    function LWM.ExpandVars(str)
+        data.b = format("%s/%s", GetRealZoneText(), UnitName("target") or "Other")
+        data.f = UnitName("focus") or "<no focus>" -- focus name
+        data.i = GetRealZoneText() -- instance name
+        data.n = UnitName("player") -- player name
+        data.t = UnitName("target") or "<no target>" -- target name
+        data.z = GetZoneText() -- zone name
+
+        return str:gsub("%%(.)", data)
+    end
+end
+
+-- Core ------------------------------------------------------------------------
 
 function LWM:CHAT_MSG_LOOT(e, msg)
     local id = tonumber(msg:match("You won:.*item:(%d+)")
