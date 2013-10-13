@@ -121,7 +121,7 @@ end
 function LWM:LookupAllWishlists(info, v)
     v = v ~= "" and self.ExpandVars(v) or nil
 
-    self:Printf("All entries %s:", v and " matching " .. v or "")
+    self:Printf("All entries%s:", v and " matching " .. v or "")
 
     local anymatch = self.anymatch
     local count = 0
