@@ -7,7 +7,7 @@
 ## X-License: BSD-2.0
 ## OptionalDeps: Ace3
 ## SavedVariables: LwmDB
-## Version: 1.0a
+## Version: 1.0
 
 # Libs
 
