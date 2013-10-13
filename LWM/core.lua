@@ -36,13 +36,7 @@ function LWM:OnInitialize()
     self:RegisterChatCommand("lwm", "OnSlashCmd")
 
     -- FuBar config
-    self:SetFuBarOption("cannotDetachTooltip", true)
-    self:SetFuBarOption("configType", "none")
-    self:SetFuBarOption("defaultPosition", "RIGHT")
-    self:SetFuBarOption("hasNoColor", true)
-    self:SetFuBarOption("hideWithoutStandby", true)
-    self:SetFuBarOption("iconPath", [[Interface\Icons\INV_Misc_Note_01]])
-    self:SetFuBarOption("tooltipType", "GameTooltip")
+    self:InitFu()
 end
 
 function LWM:OnEnable()
@@ -62,14 +56,6 @@ end
 function LWM:Printf(...) self:Print(format(...)) end
 function LWM:Echo(...) DEFAULT_CHAT_FRAME:AddMessage(format(...)) end
 
-function LWM.ExtractCharacter(input, default)
-    local char
-
-    input = input:gsub("@(%w+)", function(m) char = m return "" end):trim()
-
-    return input, char or default
-end
-
 --- Performs multiple pattern matches on supplied value.
 -- @param v (mixed) Test value.
 -- @param patterns (string) Pattern string in form of "pat1|pat2|...|patN".
@@ -82,6 +68,14 @@ function LWM.anymatch(v, patterns)
     end
 
     return false
+end
+
+function LWM.ExtractCharacter(input, default)
+    local char
+
+    input = input:gsub("@(%w+)", function(m) char = m return "" end):trim()
+
+    return input, char or default
 end
 
 do
@@ -100,6 +94,23 @@ do
 
         return str:gsub("%%(.)", data)
     end
+end
+
+--- Returns an iterator to traverse hash indexed table in alphabetical order.
+-- @param t Table.
+-- @param f Sort function for table's keys.
+-- @return function - Alphabetical iterator of hash table.
+function LWM.PairsByKeys(t, f) -- from http://www.lua.org/pil/19.3.html
+    local a = {}
+    for n in pairs(t) do tinsert(a, n) end
+    sort(a, f)
+    local i = 0             -- iterator variable
+    local iter = function() -- iterator function
+        i = i + 1
+        if a[i] == nil then return nil
+        else return a[i], t[a[i]] end
+    end
+    return iter
 end
 
 -- Core ------------------------------------------------------------------------
