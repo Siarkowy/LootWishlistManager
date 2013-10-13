@@ -74,8 +74,10 @@ end
 --- Returns wishlist flag for given item ID.
 -- @param id (number) Item ID.
 -- @return nil|number Result flag.
-function LWM:GetItem(id)
-    return self.wishlist[assert(id, "Item ID is missing.")]
+function LWM:GetItem(id, char)
+    return (char and assert(self.db.profile.wishlists[char],
+        "Character wishlist does not exist.") or self.wishlist)
+        [assert(id, "Item ID is missing.")]
 end
 
 --- Returns wishlist table for given or current character.
@@ -85,7 +87,22 @@ function LWM:GetItems(char)
     return pairs(char and self.db.profile.wishlists[char] or self.wishlist)
 end
 
+function LWM:GetSortedItems(char)
+    char = char and self.db.profile.wishlists[char] and char or self.player
+
+    local wishlist = {}
+
+    for item, cat in self:GetItems(char) do
+        tinsert(wishlist, strjoin("\t", char, cat, item))
+    end
+
+    sort(wishlist)
+
+    return ipairs(wishlist)
+end
+
 --- Sets wishlist entry for given item ID and flag.
-function LWM:SetItem(id, cat)
-    self.wishlist[assert(id, "Item ID missing.")] = cat
+function LWM:SetItem(id, cat, char)
+    (char and assert(self.db.profile.wishlists[char], "Character wishlist does not exist.")
+        or self.wishlist)[assert(id, "Item ID missing.")] = cat
 end
