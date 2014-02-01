@@ -105,7 +105,7 @@ LWM.slash = {
             type = "group",
             inline = true,
             args = {
-                category = {
+                gui_category = {
                     name = "Category",
                     desc = "Item category.",
                     type = "input",
@@ -113,7 +113,7 @@ LWM.slash = {
                     set = function(info, v) category = v end,
                     order = 1
                 },
-                item = {
+                gui_item = {
                     name = "Item",
                     desc = "Item name or link.",
                     type = "input",
@@ -121,7 +121,7 @@ LWM.slash = {
                     set = function(info, v) item = v end,
                     order = 2
                 },
-                add = {
+                gui_add = {
                     name = "Add",
                     desc = "Save new wishlist entry.",
                     type = "execute",

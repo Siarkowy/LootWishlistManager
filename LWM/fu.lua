@@ -15,6 +15,10 @@ function LWM:InitFu()
     self:SetFuBarOption("tooltipType", "GameTooltip")
 end
 
+function LWM:OnUpdateFuBarText()
+    self:SetFuBarText("Wishlist")
+end
+
 do
     local data = {}
 
