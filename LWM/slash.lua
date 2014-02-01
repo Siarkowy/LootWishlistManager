@@ -25,23 +25,29 @@ Possible variables are:
 
 local LWM = LWM
 
+local item, category
+
 LWM.slash = {
     name = "Loot Wishlist Manager",
     handler = LWM,
     type = "group",
     args = {
+        -- Command line
+
         list = {
             name = "Character wishlist",
             desc = "Prints wishlist items to chat.",
             type = "input",
             set = "LookupCharacterWishlist",
+            guiHidden = true,
             order = 10
         },
         all = {
-            name = "All wichlists",
+            name = "All wishlists",
             desc = "Prints matching or all wishlist items of all characters.",
             type = "input",
             set = "LookupAllWishlists",
+            guiHidden = true,
             order = 15
         },
         add = {
@@ -49,6 +55,7 @@ LWM.slash = {
             desc = "Adds given item to wishlist.",
             type = "input",
             set = "AddWishlistEntry",
+            guiHidden = true,
             order = 20
         },
         delete = {
@@ -56,7 +63,83 @@ LWM.slash = {
             desc = "Deletes given item from wishlist.",
             type = "input",
             set = "DeleteWishlistEntry",
+            guiHidden = true,
             order = 25
+        },
+        gui = {
+            name = "GUI",
+            desc = "Shows graphical interface.",
+            type = "execute",
+            func = function(info)
+                InterfaceOptionsFrame_OpenToFrame(LWM.options)
+            end,
+            guiHidden = true,
+            order = 30
+        },
+
+        -- GUI elements
+
+        list_gui = {
+            name = "Character wishlist",
+            desc = "Prints wishlist items to chat.",
+            type = "execute",
+            func = function(info)
+                LWM:LookupCharacterWishlist(info, "")
+            end,
+            cmdHidden = true,
+            order = 105
+        },
+        all_gui = {
+            name = "All wishlists",
+            desc = "Prints matching or all wishlist items of all characters.",
+            type = "execute",
+            func = function(info)
+                LWM:LookupAllWishlists(info, "")
+            end,
+            cmdHidden = true,
+            order = 110
+        },
+        add_gui = {
+            name = "Add item",
+            desc = "Adds item for current character.",
+            type = "group",
+            inline = true,
+            args = {
+                category = {
+                    name = "Category",
+                    desc = "Item category.",
+                    type = "input",
+                    get = function(info) return category end,
+                    set = function(info, v) category = v end,
+                    order = 1
+                },
+                item = {
+                    name = "Item",
+                    desc = "Item name or link.",
+                    type = "input",
+                    get = function(info) return item end,
+                    set = function(info, v) item = v end,
+                    order = 2
+                },
+                add = {
+                    name = "Add",
+                    desc = "Save new wishlist entry.",
+                    type = "execute",
+                    func = function(info)
+                        local _, link = GetItemInfo(item)
+
+                        if not link then
+                            LWM:Print("Wrong item name.")
+                        end
+
+                        item = nil
+                        LWM:AddWishlistEntry(info, format("%s %s", category, link))
+                    end,
+                    order = 3
+                }
+            },
+            cmdHidden = true,
+            order = 115
         },
     }
 }

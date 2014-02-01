@@ -35,6 +35,10 @@ function LWM:OnInitialize()
     LibStub("AceConfig-3.0"):RegisterOptionsTable("Loot Wishlist Manager", self.slash)
     self:RegisterChatCommand("lwm", "OnSlashCmd")
 
+    -- Add GUI options
+    self.options = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("Loot Wishlist Manager", "LWM")
+    self.options.default = function() self.db:ResetProfile() end
+
     -- FuBar config
     self:InitFu()
 end
